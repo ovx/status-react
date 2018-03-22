@@ -69,3 +69,13 @@
   {:font-size      15
    :letter-spacing -0.2
    :color          colors/blue})
+
+(def logout-container
+  {:padding-horizontal 16
+   :flex               1
+   :flex-direction     :row
+   :align-items        :center
+   :justify-content    :space-between
+   :height             52})
+
+(def version profile.components.styles/settings-item-value)

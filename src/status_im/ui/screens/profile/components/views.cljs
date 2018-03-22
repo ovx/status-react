@@ -62,7 +62,7 @@
   [react/text {:style styles/settings-title}
    title])
 
-(defn settings-item [{:keys [label-kw value action-fn active? accessibility-label icon-content]
+(defn settings-item [{:keys [label-kw value action-fn active? destructive? hide-arrow? accessibility-label icon-content]
                       :or {value "" active? true}}]
   [react/touchable-highlight
    (cond-> {:on-press action-fn
@@ -71,7 +71,8 @@
      (assoc :accessibility-label accessibility-label))
    [react/view styles/settings-item
     [react/view styles/settings-item-text-wrapper
-     [react/text {:style           styles/settings-item-text
+     [react/text {:style           (merge styles/settings-item-text
+                                          (when destructive? styles/settings-item-destructive))
                   :number-of-lines 1}
       (i18n/label label-kw)]
      (when-not (string/blank? value)
@@ -81,7 +82,7 @@
         value])]
     (if icon-content
       icon-content
-      (when active?
+      (when (and active? (not hide-arrow?))
         [vector-icons/icon :icons/forward {:color colors/gray}]))]])
 
 (defn settings-switch-item [{:keys [label-kw value action-fn active?] :or {active? true}}]
