@@ -10,6 +10,7 @@
             [status-im.ui.screens.accounts.recover.styles :as styles]
             [status-im.ui.screens.accounts.recover.db :as recover.db]
             [status-im.ui.screens.accounts.db :as db]
+            [status-im.utils.config :as config]
             [status-im.react-native.js-dependencies :as js-dependencies]
             [cljs.spec.alpha :as spec]
             [status-im.ui.components.common.common :as components.common]))
@@ -17,7 +18,8 @@
 (defview passphrase-input [passphrase]
   (letsubs [error [:get-in [:accounts/recover :passphrase-error]]
             input-ref (reagent/atom nil)]
-    {:component-did-mount #(.hideView js-dependencies/testfairy @input-ref)}
+    {:component-did-mount #(when config/testfairy-enabled?
+                             (.hideView js-dependencies/testfairy @input-ref))}
     [text-input/text-input-with-label
      {:style               {:flex 1}
       :height              92
