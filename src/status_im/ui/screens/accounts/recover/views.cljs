@@ -5,6 +5,7 @@
             [status-im.ui.components.text-input.view :as text-input]
             [status-im.ui.components.react :as react]
             [status-im.ui.components.status-bar.view :as status-bar]
+            [status-im.ui.components.styles :as components.styles]
             [status-im.ui.components.toolbar.view :as toolbar]
             [status-im.i18n :as i18n]
             [status-im.ui.screens.accounts.recover.styles :as styles]
@@ -21,7 +22,7 @@
     {:component-did-mount #(when config/testfairy-enabled?
                              (.hideView js-dependencies/testfairy @input-ref))}
     [text-input/text-input-with-label
-     {:style               {:flex 1}
+     {:style               components.styles/flex
       :height              92
       :ref                 #(reset! input-ref %)
       :label               (i18n/label :t/passphrase)
