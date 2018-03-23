@@ -1,6 +1,7 @@
 (ns status-im.ui.screens.accounts.recover.views
   (:require-macros [status-im.utils.views :refer [defview letsubs]])
   (:require [re-frame.core :as re-frame]
+            [reagent.core :as reagent]
             [status-im.ui.components.text-input.view :as text-input]
             [status-im.ui.components.react :as react]
             [status-im.ui.components.status-bar.view :as status-bar]
@@ -9,20 +10,24 @@
             [status-im.ui.screens.accounts.recover.styles :as styles]
             [status-im.ui.screens.accounts.recover.db :as recover.db]
             [status-im.ui.screens.accounts.db :as db]
+            [status-im.react-native.js-dependencies :as js-dependencies]
             [cljs.spec.alpha :as spec]
             [status-im.ui.components.common.common :as components.common]))
 
 (defview passphrase-input [passphrase]
-  (letsubs [error [:get-in [:accounts/recover :passphrase-error]]]
+  (letsubs [error [:get-in [:accounts/recover :passphrase-error]]
+            input-ref (reagent/atom nil)]
+    {:component-did-mount #(.hideView js-dependencies/testfairy @input-ref)}
     [text-input/text-input-with-label
-     {:style          {:flex 1}
-      :height         92
-      :label          (i18n/label :t/passphrase)
-      :placeholder    (i18n/label :t/enter-12-words)
-      :multiline      true
-      :default-value  passphrase
-      :on-change-text #(re-frame/dispatch [:set-in [:accounts/recover :passphrase] %])
-      :error          error}]))
+     {:style               {:flex 1}
+      :height              92
+      :ref                 #(reset! input-ref %)
+      :label               (i18n/label :t/passphrase)
+      :placeholder         (i18n/label :t/enter-12-words)
+      :multiline           true
+      :default-value       passphrase
+      :on-change-text      #(re-frame/dispatch [:set-in [:accounts/recover :passphrase] %])
+      :error               error}]))
 
 (defview password-input [password]
   (letsubs [error [:get-in [:accounts/recover :password-error]]]
